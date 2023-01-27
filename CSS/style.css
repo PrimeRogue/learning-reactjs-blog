@@ -1,0 +1,149 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Paytone+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Nunito", sans-serif;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  transition: all 0.1s linear;
+}
+
+:root {
+  --green: #28a745;
+  --light-black: #3d3f4c;
+  --black: #292a2d;
+  --muted: #6c757d;
+  --warning: #efbb35;
+}
+
+html {
+  overflow-x: hidden;
+  font-size: 62.5%;
+}
+
+body {
+  background-color: var(--black);
+}
+
+.container {
+  padding: 3rem 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.header {
+  padding: 1rem;
+  margin: 0;
+  border-bottom: 2px solid #35383f;
+}
+
+.header .image {
+  height: 7rem;
+  width: 7rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #35383f;
+  user-select: none;
+}
+
+.header img {
+  width: 110%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.header h1 a {
+  font-size: 4rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.search {
+  height: 5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.search input {
+  flex-grow: 1;
+  font-size: 1.6rem;
+  background-color: transparent;
+}
+
+.search button {
+  width: 10rem;
+  font-size: 1.6rem;
+}
+
+.content {
+  width: 100%;
+  margin: 4rem 0;
+}
+
+.content h2 {
+  color: var(--muted);
+  font-size: 2.5rem;
+  font-weight: 350;
+}
+
+.content ul {
+  width: 100%;
+  margin: 2rem 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.content ul li {
+  width: 33%;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--muted);
+  margin: 1rem 0;
+}
+
+.content ul li a {
+  margin-left: 1rem;
+  color: #77a0ef;
+  font-weight: 400;
+}
+
+@media screen and (max-width: 992px) {
+  html {
+    font-size: 60%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 55%;
+  }
+
+  .content ul {
+    display: flex;
+    flex-direction: column;
+  }
+  .content ul li {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  html {
+    font-size: 50%;
+  }
+  .header {
+    flex-direction: column;
+  }
+  .search input {
+    width: 50%;
+  }
+  .content {
+    padding: 2rem;
+  }
+}

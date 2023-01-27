@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome CDN Link  -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./CSS/post.css" />
+    <link rel="stylesheet" href="./CSS/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/base16/dracula.min.css"
+      integrity="sha512-zKpFlhUX8c+WC6H/XTJavnEpWFt2zH9BU9vu0Hry5Y+SEgG21pRMFcecS7DgDXIegXBQ3uK9puwWPP3h6WSR9g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./Images/favicon-32x32.png"
+    />
+    <title>2. React hook useState</title>
+  </head>
+
+  <body>
+    <div class="container-fluid p-0">
+      <div class="header row align-items-center p-3">
+        <div class="image mr-4">
+          <img src="./Images/android-chrome-192x192.png" alt="" />
+        </div>
+        <h1 class="text-muted">
+          <a href="./index.html">Learning ReactJS Blog</a>
+        </h1>
+      </div>
+      <div class="container">
+        <!-- Tiêu đề -->
+        <h2>2. React hook useState</h2>
+        <div class="part">
+          <h3>1. Trường hợp initState là một mảng hoặc một Object</h3>
+          <p>Nên làm theo các bước sau:</p>
+          <pre>
+            <code>
+const [todoList, setTodoList] =useState([&quot;Todo1&quot;, &quot;Todo2&quot;])
+function handleSomething(){
+   // 1. clone
+   const newTodoList = [...todoList]
+
+   // 2. do something
+
+   // 3. setState
+   setTodoList(newTodoList)
+}
+            </code>
+          </pre>
+        </div>
+        <div class="part">
+          <h3>2. useState dùng REPLACING chứ không dùng MERGING</h3>
+          <p>setState trong class component thì dùng MERGING</p>
+          <pre>
+            <code>
+this.state = {name: &quot;A&quot;, color: &quot;brown&quot;}; 
+this.setState({color:&apos;green&apos;});
+// result: {name: &quot;A&quot;, color: &quot;green&quot;}
+            </code>
+          </pre>
+          <p>useState trong functional component thì dùng REPLACING</p>
+          <pre>
+            <code>
+const [person, setPerson] = useState({name: &quot;A&quot;, color: &quot;brown&quot;});
+setPerson({color: &quot;green&quot;});
+// result: {color: &quot;green&quot;}
+            </code>
+          </pre>
+          <p>Giải quyết MERGING trong useState</p>
+          <pre>
+            <code>
+const [person, setPerson] = useState({name: &quot;A&quot;, color: &quot;brown&quot;});
+setPerson({...person, color: &quot;green&quot;});
+// result: {name: &quot;A&quot;, color: &quot;green&quot;}
+            </code>
+          </pre>
+        </div>
+      </div>
+    </div>
+    <script src="./JS/jquery-3.6.0.min.js"></script>
+    <script src="./JS/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad()
+    </script>
+  </body>
+</html>

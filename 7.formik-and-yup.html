@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome CDN Link  -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./CSS/post.css" />
+    <link rel="stylesheet" href="./CSS/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/base16/dracula.min.css"
+      integrity="sha512-zKpFlhUX8c+WC6H/XTJavnEpWFt2zH9BU9vu0Hry5Y+SEgG21pRMFcecS7DgDXIegXBQ3uK9puwWPP3h6WSR9g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./Images/favicon-32x32.png"
+    />
+    <title>7. Sử dụng thư viện Formik và Yup</title>
+  </head>
+
+  <body>
+    <div class="container-fluid p-0">
+      <div class="header row align-items-center p-3">
+        <div class="image mr-4">
+          <img src="./Images/android-chrome-192x192.png" alt="" />
+        </div>
+        <h1 class="text-muted">
+          <a href="./index.html">Learning ReactJS Blog</a>
+        </h1>
+      </div>
+      <div class="container">
+        <!-- Tiêu đề -->
+        <h2>7. Sử dụng thư viện Formik và Yup</h2>
+        <div class="part">
+          <p>Cài đặt Formik và Yup</p>
+          <pre>
+            <code>
+npm install formik --save
+// hoặc
+yarn add formik
+
+npm install yup --save
+// hoặc
+yarn add yup
+            </code>
+          </pre>
+          <p>Import thư viện</p>
+          <pre>
+            <code>
+import { useFormik } from "formik";
+import * as Yup from "yup";
+            </code>
+          </pre>
+        </div>
+        <div class="part">
+          <h3>1. Sử dụng cơ bản Formik và Yup</h3>
+          <p>
+            1. hook <span class="hl">useFormik()</span> được truyền vào các
+            thuộc tính initialValues, validationSchema, onSubmit.
+          </p>
+          <p>
+            2. <span class="hl">formik.values</span> là một props của formik
+            chứa các giá trị ở phần khởi tạo.
+          </p>
+          <p>
+            3. <span class="hl">formik.getFieldProps()</span> được dùng để thay
+            thế cho onChange -> <span class="hl">formik.handleChange</span>,
+            onBlur -> <span class="hl">formik.handleBlur</span>
+          </p>
+          <pre>
+            <code>
+{...formik.getFieldProps(&#x22;firstName&#x22;)};
+
+// được thay thế cho
+
+name=&#x22;firstName&#x22;
+onChange = {formik.handleChange}
+onBlur = {formik.handleBlur}
+value = {formik.values.firstName}
+            </code>
+          </pre>
+          <p>
+            4. <span class="hl">formik.touched</span> trả về giá trị true/false
+            khi visit/touch một field
+          </p>
+          <p>
+            5. <span class="hl">formik.errors</span> chứa các giá trị của Yup
+            trả về
+          </p>
+          <pre>
+            <code>
+const SignUpForm = () =&#x3E; {
+  
+  const formik = useFormik({
+    initialValues: {
+      firstName: &#x22;&#x22;,
+      lastName: &#x22;&#x22;,
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string()
+        .max(20, &#x22;Must be 20 characters or less&#x22;)
+        .required(&#x22;Required&#x22;),
+      lastName: Yup.string()
+        .max(10, &#x22;Must be 10 characters or less&#x22;)
+        .required(&#x22;Required&#x22;),
+    }),
+    onSubmit: (values) =&#x3E; {
+      console.log(values);
+    },
+  });
+  return (
+    &#x3C;form onSubmit={formik.handleSubmit}&#x3E;
+      &#x3C;div className=&#x22;form-group&#x22;&#x3E;
+        &#x3C;label htmlFor=&#x22;firstName&#x22;&#x3E;Firstname&#x3C;/label&#x3E;
+        &#x3C;input
+          type=&#x22;text&#x22;
+          id=&#x22;firstName&#x22;
+          placeholder=&#x22;Enter firstName...&#x22;
+          {...formik.getFieldProps(&#x22;firstName&#x22;)}
+        /&#x3E;
+        {formik.touched.firstName &#x26;&#x26; formik.errors.firstName ? (
+          &#x3C;span&#x3E;{formik.errors.firstName}&#x3C;/span&#x3E;
+        ) : null}
+        &#x3C;label htmlFor=&#x22;lastName&#x22;&#x3E;LastName&#x3C;/label&#x3E;
+        &#x3C;input
+          type=&#x22;text&#x22;
+          id=&#x22;lastName&#x22;
+          placeholder=&#x22;Enter lastName...&#x22;
+          {...formik.getFieldProps(&#x22;lastName&#x22;)}
+        /&#x3E;
+        {formik.touched.lastName &#x26;&#x26; formik.errors.lastName ? (
+          &#x3C;span&#x3E;{formik.errors.lastName}&#x3C;/span&#x3E;
+        ) : null}
+      &#x3C;/div&#x3E;
+      &#x3C;button type=&#x22;submit&#x22;&#x3E;Submit&#x3C;/button&#x3E;
+    &#x3C;/form&#x3E;
+  );
+};
+            </code>
+          </pre>
+          <div class="image">
+            <img src="./Images/7.formik-and-yup/Sample1.PNG" alt="" />
+          </div>
+        </div>
+        <div class="part">
+          <h3>2. Sử dụng các component trong Formik</h3>
+          <p>
+            1. <span class="hl">&#x3C;Formik&#x3E;</span> được bọc ngoài cùng
+            <span class="hl">&#x3C;Form&#x3E;</span>.
+          </p>
+          <p>
+            2. <span class="hl">&#x3C;Form&#x3E;</span> sẽ render ra thẻ
+            <span class="hl">&#x3C;form&#x3E;</span>.
+          </p>
+          <p>
+            3. <span class="hl">&#x3C;Field&#x3E;</span> sẽ render mặc định ra
+            thẻ <span class="hl">&#x3C;input&#x3E;</span>. Ngoài ra
+            <span class="hl">&#x3C;Field&#x3E;</span> còn có thuộc tính
+            <span class="styling">as</span>, với
+            <span class="styling">as="select"</span> render ra thẻ
+            <span class="hl">&#x3C;select&#x3E;</span>,
+            <span class="styling">as="textarea"</span> render ra thẻ
+            <span class="hl">&#x3C;textarea&#x3E;</span>...
+          </p>
+          <p>
+            4. <span class="hl">&#x3C;ErrorMessage&#x3E;</span> chứa các lỗi ứng
+            với thuộc tính <span class="styling">name</span>, tương tự như
+            <span class="hl">formik.errors</span>.
+          </p>
+          <p>5. Cách này ngắn gọn hơn cách dùng cơ bản ở trên.</p>
+          <pre>
+            <code>
+import { Formik, Form, Field, ErrorMessage } from "formik";
+const SignUpFormV2 = () =&#x3E; {
+  return (
+    &#x3C;Formik
+      initialValues={{
+        firstName: &#x22;&#x22;,
+        lastName: &#x22;&#x22;,
+      }}
+      validationSchema={Yup.object({
+        firstName: Yup.string()
+          .max(20, &#x22;Must be 20 characters or less&#x22;)
+          .required(&#x22;Required&#x22;),
+        lastName: Yup.string()
+          .max(10, &#x22;Must be 10 characters or less&#x22;)
+          .required(&#x22;Required&#x22;),
+      })}
+      onSubmit={(values) =&#x3E; {
+        console.log(values);
+      }}
+    &#x3E;
+      &#x3C;Form className=&#x22;form-container&#x22;&#x3E;
+        &#x3C;div className=&#x22;form-group&#x22;&#x3E;
+          &#x3C;label htmlFor=&#x22;firstName&#x22;&#x3E;Firstname&#x3C;/label&#x3E;
+          &#x3C;Field
+            name=&#x22;firstName&#x22;
+            type=&#x22;text&#x22;
+            placeholder=&#x22;Enter your first name&#x22;
+          &#x3E;&#x3C;/Field&#x3E;
+          &#x3C;ErrorMessage name=&#x22;firstName&#x22;&#x3E;&#x3C;/ErrorMessage&#x3E;
+        &#x3C;/div&#x3E;
+        &#x3C;div className=&#x22;form-group&#x22;&#x3E;
+          &#x3C;label htmlFor=&#x22;lastName&#x22;&#x3E;Last name&#x3C;/label&#x3E;
+          &#x3C;Field
+            name=&#x22;lastName&#x22;
+            type=&#x22;text&#x22;
+            placeholder=&#x22;Enter your first name&#x22;
+          &#x3E;&#x3C;/Field&#x3E;
+          &#x3C;ErrorMessage name=&#x22;lastName&#x22;&#x3E;&#x3C;/ErrorMessage&#x3E;
+        &#x3C;/div&#x3E;
+        &#x3C;button type=&#x22;submit&#x22;&#x3E;Submit&#x3C;/button&#x3E;
+      &#x3C;/Form&#x3E;
+    &#x3C;/Formik&#x3E;
+  );
+};
+            </code>
+          </pre>
+        </div>
+        <div class="part">
+          <h3>3. Thực hành và tối ưu giao diện Form</h3>
+        </div>
+      </div>
+    </div>
+    <script src="./JS/jquery-3.6.0.min.js"></script>
+    <script src="./JS/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad()
+    </script>
+    <script src="./JS/script.js"></script>
+  </body>
+</html>

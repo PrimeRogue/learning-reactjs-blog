@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome CDN Link  -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./CSS/post.css" />
+    <link rel="stylesheet" href="./CSS/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/base16/dracula.min.css"
+      integrity="sha512-zKpFlhUX8c+WC6H/XTJavnEpWFt2zH9BU9vu0Hry5Y+SEgG21pRMFcecS7DgDXIegXBQ3uK9puwWPP3h6WSR9g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./Images/favicon-32x32.png"
+    />
+    <title>6. Form</title>
+  </head>
+
+  <body>
+    <div class="container-fluid p-0">
+      <div class="header row align-items-center p-3">
+        <div class="image mr-4">
+          <img src="./Images/android-chrome-192x192.png" alt="" />
+        </div>
+        <h1 class="text-muted">
+          <a href="./index.html">Learning ReactJS Blog</a>
+        </h1>
+      </div>
+      <div class="container">
+        <!-- Tiêu đề -->
+        <h2>6. Form</h2>
+        <div class="part">
+          <h3>1. setState() nhiều input, textarea, select... trong form</h3>
+          <pre>
+            <code>
+const [inputValue, setInputValue] = useState(&#x22;&#x22;);
+const [textareaValue, setTextareatValue] = useState(&#x22;&#x22;);
+const [selectValue, setSelectValue] = useState(&#x22;&#x22;);
+            </code>
+          </pre>
+          <p>
+            Thay vì phải setState() nhiều thành phần trong form như ở trên, ta
+            có thể gôm các thành phần chung 1 object và sử dụng thuộc tính name
+          </p>
+          <pre>
+            <code>
+function App() {
+  // 1. Đầu tiên, khởi tạo values là 1 object. Nhớ đặt tên "phần tử trong object" giống với value của "thuộc tính name"
+  const [values, setValues] = useState({
+    fullname: &#x22;&#x22;,
+    email: &#x22;&#x22;,
+  });
+
+  // 2. Sử dụng thuộc tính name
+  const handleSetValue = (e) =&#x3E; {
+    setValues({
+      // 3. setState() sử dụng REPLACING nên phải clone
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+  };
+  return (
+    &#x3C;main&#x3E;
+      &#x3C;form action=&#x22;&#x22;&#x3E;
+        &#x3C;input
+          type=&#x22;text&#x22;
+          name=&#x22;fullname&#x22;
+          placeholder=&#x22;Enter fullname&#x22;
+          onChange={handleSetValue}
+        /&#x3E;
+        &#x3C;input
+          type=&#x22;email&#x22;
+          name=&#x22;email&#x22;
+          placeholder=&#x22;Enter email&#x22;
+          onChange={handleSetValue}
+        /&#x3E;
+      &#x3C;/form&#x3E;
+    &#x3C;/main&#x3E;
+  );
+}
+            </code>
+          </pre>
+        </div>
+        <div class="part">
+          <h3>2. Trường hợp thẻ input có type="checkbox"</h3>
+          <pre>
+            <code>
+function App() {
+  const [values, setValues] = useState({
+    fullname: &#x22;&#x22;,
+    email: &#x22;&#x22;,
+    single: false,
+  });
+  const handleSetValue = (e) =&#x3E; {
+    // 1. Khai báo biến lấy type của thẻ input
+    const typeInput = e.target.type;
+    setValues({
+      ...values,
+      // 2. Kiểm tra type ucar input có phải checkbox hay không
+      [e.target.name]:
+        typeInput === &#x22;checkbox&#x22; ? e.target.checked : e.target.value,
+    });
+  };
+  return (
+    &#x3C;main&#x3E;
+      &#x3C;form action=&#x22;&#x22;&#x3E;
+        &#x3C;input
+          type=&#x22;text&#x22;
+          name=&#x22;fullname&#x22;
+          placeholder=&#x22;Enter fullname&#x22;
+          onChange={handleSetValue}
+        /&#x3E;
+        &#x3C;input
+          type=&#x22;email&#x22;
+          name=&#x22;email&#x22;
+          placeholder=&#x22;Enter email&#x22;
+          onChange={handleSetValue}
+        /&#x3E;
+        &#x3C;input type=&#x22;checkbox&#x22; name=&#x22;single&#x22; onChange={handleSetValue} /&#x3E;
+      &#x3C;/form&#x3E;
+    &#x3C;/main&#x3E;
+  );
+}
+            </code>
+          </pre>
+        </div>
+      </div>
+    </div>
+    <script src="./JS/jquery-3.6.0.min.js"></script>
+    <script src="./JS/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad()
+    </script>
+    <script src="./JS/script.js"></script>
+  </body>
+</html>

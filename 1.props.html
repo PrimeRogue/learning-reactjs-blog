@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome CDN Link  -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./CSS/post.css" />
+    <link rel="stylesheet" href="./CSS/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/base16/dracula.min.css"
+      integrity="sha512-zKpFlhUX8c+WC6H/XTJavnEpWFt2zH9BU9vu0Hry5Y+SEgG21pRMFcecS7DgDXIegXBQ3uK9puwWPP3h6WSR9g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./Images/favicon-32x32.png"
+    />
+    <title>1. Props</title>
+  </head>
+
+  <body>
+    <div class="container-fluid p-0">
+      <div class="header row align-items-center p-3">
+        <div class="image mr-4">
+          <img src="./Images/android-chrome-192x192.png" alt="" />
+        </div>
+        <h1 class="text-muted">
+          <a href="./index.html">Learning ReactJS Blog</a>
+        </h1>
+      </div>
+      <div class="container">
+        <!-- Tiêu đề -->
+        <h2>1. Props</h2>
+        <div class="part">
+          <p>Props là 1 object, giá trị của props có thể là 1 hàm</p>
+          <pre>
+           <code class="language-javascript">
+const props = {
+  srcImage: "https://source...",
+  srcAvatar: "https://source...",
+  title: "Learning ReactJS Framework",
+  author: "Bùi Trần Thiên Ân",
+  onClick : () => true
+}
+           </code>
+          </pre>
+          <p>Sử dụng props</p>
+          <pre>
+        <code class="language-javascript">
+// Truyền props làm đối số trong component
+function YoutubeItem(props) {
+  return (
+    &lt;div&gt;
+      &lt;img src={props.srcImage} alt=&quot;&quot; /&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Sử dụng props trong component
+&lt;YoutubeItem srcImage=&quot;https://source.unsplash.com/random&quot;&gt;
+&lt;/YoutubeItem&gt;
+            </code>
+           </pre>
+          <p>
+            Rendering list như này
+            <a href="https://react-projects-2-tours.netlify.app/"
+              >https://react-projects-2-tours.netlify.app/</a
+            >
+          </p>
+          <p>1. Truyền vào component</p>
+          <pre>
+            <code>&lt;List people={data} /&gt;</code>
+          </pre>
+          <p>Trong đó, <i>data</i> là 1 mảng. Khi đó <i>props</i> sẽ chứa</p>
+          <pre>
+            <code>
+const props ={
+  people: [...]
+}
+          </code>
+          </pre>
+          <p>Có thể sử dụng destructoring, khi đó</p>
+          <pre><code>
+const {people} = props
+          </code></pre>
+          <p>
+            2. Sử dụng props trong hàm component, có thể thay props thành
+            destructoring ở trên
+          </p>
+          <pre>
+            <code>
+const List = (props) =&gt; {
+return (
+  &lt;div&gt;
+    {props.people.map((item) =&gt; {
+      const { id, name, age, image } = item;
+      return (
+        &lt;div key={id}&gt;&lt;/div&gt;
+      );
+    })}
+  &lt;/div&gt;
+);
+};
+            </code>
+          </pre>
+        </div>
+      </div>
+    </div>
+    <script src="./JS/jquery-3.6.0.min.js"></script>
+    <script src="./JS/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad()
+    </script>
+    <script src="./JS/script.js"></script>
+  </body>
+</html>
