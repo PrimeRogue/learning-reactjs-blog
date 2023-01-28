@@ -171,12 +171,14 @@ const SignUpForm = () =&#x3E; {
             <span class="styling">as="select"</span> render ra thẻ
             <span class="hl">&#x3C;select&#x3E;</span>,
             <span class="styling">as="textarea"</span> render ra thẻ
-            <span class="hl">&#x3C;textarea&#x3E;</span>...
+            <span class="hl">&#x3C;textarea&#x3E;</span>. Phải truyền vào thuộc
+            tính <span class="styling">name</span>.
           </p>
           <p>
             4. <span class="hl">&#x3C;ErrorMessage&#x3E;</span> chứa các lỗi ứng
             với thuộc tính <span class="styling">name</span>, tương tự như
-            <span class="hl">formik.errors</span>.
+            <span class="hl">formik.errors</span>. Phải truyền vào thuộc tính
+            <span class="styling">name</span>.
           </p>
           <p>5. Cách này ngắn gọn hơn cách dùng cơ bản ở trên.</p>
           <pre>
@@ -229,7 +231,189 @@ const SignUpFormV2 = () =&#x3E; {
           </pre>
         </div>
         <div class="part">
-          <h3>3. Thực hành và tối ưu giao diện Form</h3>
+          <h3>3. Yup Validation Schema Example</h3>
+          <pre>
+            <code>
+const jobs = [
+  &#x22;Frontend Developer&#x22;,
+  &#x22;Backend Developer&#x22;,
+  &#x22;Fullstack Developer&#x22;,
+];
+
+// ...
+
+validationSchema={Yup.object({
+  // validate normal input
+  name: Yup.string().required(&#x22;Required&#x22;),
+  // validate email input
+  email: Yup.string().email().required(&#x22;Required&#x22;),
+  // validate textarea 
+  introduce: Yup.string().max(50).required(&#x22;Required&#x22;),
+  // validate select box
+  job: Yup.string().required(&#x22;Please select a job&#x22;).oneOf(jobs),
+  // validate check box
+  terms: Yup.boolean().oneOf(
+    [true],
+    &#x22;Please check the terms and conditions&#x22;
+  ),
+})}
+            </code>
+          </pre>
+        </div>
+        <div class="part">
+          <h3>4. Form Example</h3>
+          <div class="image">
+            <img src="./Images/7.formik-and-yup/Sample2.PNG" alt="" />
+          </div>
+          <p>
+            Cấu trúc của <i>name, email, introduce, job</i> đều có
+            <span class="hl">label, input, error message</span> nên ta sẽ viết 1
+            hàm <span class="hl">CustomInput</span> để dùng chung.
+          </p>
+          <pre>
+            <code>
+const CustomInput = ({ label, ...props }) =&#x3E; {
+  return (
+    &#x3C;div className=&#x22;form-group&#x22;&#x3E;
+      &#x3C;label htmlFor={props.name}&#x3E;{label}&#x3C;/label&#x3E;
+      &#x3C;Field {...props}&#x3E;&#x3C;/Field&#x3E;
+      &#x3C;ErrorMessage name={props.name}&#x3E;&#x3C;/ErrorMessage&#x3E;
+    &#x3C;/div&#x3E;
+  );
+};
+            </code>
+          </pre>
+          <p>tương tự với hàm <span class="hl">CustomCheckbox</span>.</p>
+          <pre>
+            <code class="language-javascript">
+const CustomCheckbox = ({ children, ...props }) =&#x3E; {
+  // Destructuring mảng lấy phần tử đầu tiên trong mảng 
+  const [field] = useField(props);
+  return (
+    &#x3C;div className=&#x22;form-group&#x22;&#x3E;
+      &#x3C;label&#x3E;
+        &#x3C;input type=&#x22;checkbox&#x22; {...field} {...props} /&#x3E;
+        // children là thành phần được bọc bởi CustomCheckbox
+        <span class="hljs-comment">// ở code ví dụ dưới thì span sẽ nằm ngang cấp với input</span>
+        {children}
+      &#x3C;/label&#x3E;
+      &#x3C;ErrorMessage name={props.name}&#x3E;&#x3C;/ErrorMessage&#x3E;
+    &#x3C;/div&#x3E;
+  );
+};
+            </code>
+          </pre>
+          <p>Full code</p>
+          <pre>
+            <code>
+import React from &#x22;react&#x22;;
+import { Formik, Form, useField, Field, ErrorMessage } from &#x22;formik&#x22;;
+import * as Yup from &#x22;yup&#x22;;
+const SignUpFormFinal = () =&#x3E; {
+  const jobs = [
+    &#x22;Frontend Developer&#x22;,
+    &#x22;Backend Developer&#x22;,
+    &#x22;Fullstack Developer&#x22;,
+  ];
+
+  return (
+    &#x3C;Formik
+      initialValues={{
+        name: &#x22;&#x22;,
+        email: &#x22;&#x22;,
+        introduce: &#x22;&#x22;,
+        job: &#x22;&#x22;,
+        terms: false,
+      }}
+      validationSchema={Yup.object({
+        name: Yup.string().required(&#x22;Required&#x22;),
+        email: Yup.string().email().required(&#x22;Required&#x22;),
+        introduce: Yup.string().max(50).required(&#x22;Required&#x22;),
+        job: Yup.string().required(&#x22;Please select a job&#x22;).oneOf(jobs),
+        terms: Yup.boolean().oneOf(
+          [true],
+          &#x22;Please check the terms and conditions&#x22;
+        ),
+      })}
+      onSubmit={(values, actions) =&#x3E; {
+        setTimeout(() =&#x3E; {
+          actions.resetForm({
+            name: &#x22;&#x22;,
+            email: &#x22;&#x22;,
+            introduce: &#x22;&#x22;,
+            job: &#x22;&#x22;,
+            terms: false,
+          });
+          actions.setSubmitting(false);
+        }, 5000);
+      }}
+    &#x3E;
+      {(formik) =&#x3E; {
+        return (
+          &#x3C;Form className=&#x22;form-container&#x22;&#x3E;
+            &#x3C;CustomInput
+              label=&#x22;Name&#x22;
+              name=&#x22;name&#x22;
+              placeholder=&#x22;Enter your first name&#x22;
+              type=&#x22;text&#x22;
+            &#x3E;&#x3C;/CustomInput&#x3E;
+            &#x3C;CustomInput
+              label=&#x22;Email address&#x22;
+              name=&#x22;email&#x22;
+              placeholder=&#x22;Enter your email address&#x22;
+              type=&#x22;email&#x22;
+            &#x3E;&#x3C;/CustomInput&#x3E;
+            &#x3C;CustomInput
+              label=&#x22;Introduce yourself&#x22;
+              name=&#x22;introduce&#x22;
+              placeholder=&#x22;Enter your first name&#x22;
+              as=&#x22;textarea&#x22;
+            &#x3E;&#x3C;/CustomInput&#x3E;
+            &#x3C;CustomInput name=&#x22;job&#x22; label=&#x22;Select your job&#x22; as=&#x22;select&#x22;&#x3E;
+              {jobs.map((item) =&#x3E; {
+                return &#x3C;option value={item}&#x3E;{item}&#x3C;/option&#x3E;;
+              })}
+            &#x3C;/CustomInput&#x3E;
+            &#x3C;CustomCheckbox name=&#x22;terms&#x22;&#x3E;
+              &#x3C;span style={{ marginLeft: &#x22;5px&#x22; }}&#x3E;
+                I accept the terms and conditions
+              &#x3C;/span&#x3E;
+            &#x3C;/CustomCheckbox&#x3E;
+            &#x3C;button type=&#x22;submit&#x22;&#x3E;Submit&#x3C;/button&#x3E;
+          &#x3C;/Form&#x3E;
+        );
+      }}
+    &#x3C;/Formik&#x3E;
+  );
+};
+
+const CustomInput = ({ label, ...props }) =&#x3E; {
+  return (
+    &#x3C;div className=&#x22;form-group&#x22;&#x3E;
+      &#x3C;label htmlFor={props.name}&#x3E;{label}&#x3C;/label&#x3E;
+      &#x3C;Field {...props}&#x3E;&#x3C;/Field&#x3E;
+      &#x3C;ErrorMessage name={props.name}&#x3E;&#x3C;/ErrorMessage&#x3E;
+    &#x3C;/div&#x3E;
+  );
+};
+
+const CustomCheckbox = ({ children, ...props }) =&#x3E; {
+  const [field] = useField(props);
+  console.log(field);
+  return (
+    &#x3C;div className=&#x22;form-group&#x22;&#x3E;
+      &#x3C;label&#x3E;
+        &#x3C;input type=&#x22;checkbox&#x22; {...field} {...props} /&#x3E;
+        {children}
+      &#x3C;/label&#x3E;
+      &#x3C;ErrorMessage name={props.name}&#x3E;&#x3C;/ErrorMessage&#x3E;
+    &#x3C;/div&#x3E;
+  );
+};
+export default SignUpFormFinal;
+
+            </code>
+          </pre>
         </div>
       </div>
     </div>

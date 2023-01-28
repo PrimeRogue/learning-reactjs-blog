@@ -55,6 +55,11 @@ body {
   user-select: none;
 }
 
+.header img:hover {
+  transform: rotate(5deg);
+  transition: all 0.1s linear;
+  cursor: pointer;
+}
 .header h1 a {
   font-size: 4rem;
   font-weight: bold;
